@@ -12,17 +12,13 @@ void DestroyImage(Image * image)
 	if (image->pixels)
 		delete[] image->pixels;
 	image->pixels = NULL;
-#ifdef _DEBUG
 	delete[] image->file;
-#endif
 }
 
 void LoadImage(char * file, Image* image)
 {
-#ifdef _DEBUG
 	image->file = new char[strlen(file) + 1];
 	memcpy(image->file, file, strlen(file) + 1);
-#endif
 	int texChannels;
 	byte* data = stbi_load(file, (int*)&image->width, (int*)&image->height, &texChannels, STBI_rgb_alpha);
 	if (!data)

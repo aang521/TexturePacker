@@ -1,5 +1,7 @@
 #include "image.h"
 
+#pragma warning(disable:4996)
+
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "stb_image/stb_image_write.h"
 
@@ -47,14 +49,11 @@ void CreatePackedTexture(char* outputFile, List<char*> &inputFiles)
 	int smallestWidth = width;
 	int smallestHeight = height;
 	bool done = false;
-	int hurrdurr = 0;
 	while (!done)
 	{
-		hurrdurr++;
 		vector<vector<bool>> cells;
 		List<int> widths;
 		List<int> heights;
-
 
 		cells.resize(1);
 		cells[0].resize(1);
@@ -207,6 +206,15 @@ void CreatePackedTexture(char* outputFile, List<char*> &inputFiles)
 		for (unsigned int y = 0; y < smallest[i].height; y++)
 			memcpy(&data[x + (y + smallest[i].y)*width], &smallest[i].pixels[y*srcWidth], sizeof(Color)*srcWidth);
 	}
+
+	FILE* f = fopen("out.txt", "w");
+	char buff[1024];
+	for (int i = 0; i < smallest.length(); i++)
+	{
+		sprintf(buff, "%s: %i %i %i %i\n", smallest[i].file, smallest[i].x, smallest[i].y, smallest[i].width, smallest[i].height);
+		fwrite(buff,1, strlen(buff), f);
+	}
+	fclose(f);
 
 	if( stbi_write_png(outputFile, width, height, 4, data, 4 * width) == 0 )
 	{

@@ -11,8 +11,6 @@ struct Image
 	u32 width, height;
 	u32 x, y;
 	Color* pixels = NULL;
-#ifdef _DEBUG
 	char* file;
-#endif
 	void destroy() { DestroyImage(this); }
 };
