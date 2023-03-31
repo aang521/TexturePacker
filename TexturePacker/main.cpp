@@ -32,7 +32,8 @@ void CreatePackedTexture(char* outputFile, List<char*> &inputFiles)
 
 	sort(sourceImages.first(), sourceImages.last(), SortByHeightFunc);
 
-	List<Image> smallest = sourceImages;
+	List<Image> smallest;
+
 
 	int height = sourceImages[0].height;
 	int widestFrame = sourceImages[0].width;
@@ -43,6 +44,7 @@ void CreatePackedTexture(char* outputFile, List<char*> &inputFiles)
 		width += sourceImages[i].width;
 		widestFrame = MAX(widestFrame, sourceImages[i].width);
 		totalArea += sourceImages[i].width * sourceImages[i].height;
+		height = MAX(height, sourceImages[i].height);
 	}
 
 	int smallestArea = width * height;
@@ -196,6 +198,8 @@ void CreatePackedTexture(char* outputFile, List<char*> &inputFiles)
 
 	width = smallestWidth;
 	height = smallestHeight;
+
+	assert(smallest.size() > 0);
 
 	Color* data = new Color[width*height];
 	memset(data, 0, sizeof(Color)*width*height);
